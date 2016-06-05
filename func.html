@@ -1,0 +1,77 @@
+<meta charset ='utf-8'>
+<script>
+
+function getRandomInt (min, max) {
+	return (Math.floor(Math.random()*(max-min+1)+min))
+}
+
+function getCard () {
+	var cards = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+	return cards[getRandomInt(0, cards.length-1)]
+}
+
+function getSum (arr) {
+	var n=0
+	var a=0
+	for (var i=0; i<arr.length; i++) {
+		if (arr[i]!='A') {
+			if ((arr[i]>=6) || (arr[i]<=10)) {
+				n=n+parseInt(arr[i])
+			} else if ((arr[i]=='J') || (arr[i]=='Q') || (arr[i]=='K')) {
+				n=n+10
+			}
+		}
+	}
+
+	for (i=0; i<arr.length; i++) {
+		if (arr[i]=='A') {
+			if (n>10){
+				n=n+1
+			} else {
+				n=n+11
+			}
+		}
+	}
+	return (n)
+}
+
+function getStatus () {
+	return 'Дилер: ' + dealer.join(' ') + '  Игрок: ' + player.join(' ')
+}
+
+var dealer = [getCard()]
+var player = [getCard(), getCard()]
+var answer =''
+if (getSum(player)==21) {
+	alert ('Невероятное везение! Black Jack при раздаче!')
+}
+else {
+do {
+	answer = prompt ('Дилер: ' + dealer.join(' ') + '  Игрок: ' + player.join(' ') + '   Хотите получить еще одну карту? ("да")')
+	if (answer=='да') {
+		player.push(getCard())
+		if (getSum(player)==21) {
+			alert ('Дилер: ' + dealer.join(' ') + '  Игрок: ' + player.join(' ') + '  Сумма = ' + getSum(player) + '   Black Jack!')
+			break
+		} else if (getSum(player)>21) {
+			alert('Дилер: ' + dealer.join(' ') + '  Игрок: ' + player.join(' ') + '  Сумма = ' + getSum(player) + '    Перебор!')
+			break
+		} 
+	} else {
+		while (getSum(dealer)<17) {
+			dealer.push(getCard())
+		}
+		if (getSum(dealer)>getSum(player)) {
+			alert ('Дилер: ' + dealer.join(' ') + '  Игрок: ' + player.join(' ') + '            Вы проиграли :(')
+		}
+		else if (getSum(dealer)==getSum(player)) {
+			alert ('Дилер: ' + dealer.join(' ') + '  Игрок: ' + player.join(' ') + '            Ничья :)')
+		}
+		else {
+			alert ('Дилер: ' + dealer.join(' ') + '  Игрок: ' + player.join(' ') + '            Победа!!!!!!!!!!!!!!!!!!')
+		}
+	}
+} while (answer=='да')
+}
+
+</script>
